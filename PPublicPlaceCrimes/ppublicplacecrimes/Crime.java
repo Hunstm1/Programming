@@ -118,7 +118,7 @@ public class Crime implements Comparable<Crime>{//RegionName is the defult compa
 	}
 	@Override
 	public int compareTo(Crime c) {
-		// TODO Auto-generated method stub
+		// sorts by region name, secondary sort by area name
 		if (regionName.compareTo(c.getRegionName()) == 0){	return areaLocation.compareTo(c.getAreaLocation());	}
 		else { return regionName.compareTo(c.getRegionName()); }
 	}

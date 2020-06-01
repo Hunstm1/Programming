@@ -223,7 +223,7 @@ public class GUI extends JFrame {
 		panel_4.add(btnMaxMin);
 		drawTable(dataList);
 	}
-	
+	//draws my table from a arraylist fed into it
 	public void drawTable(ArrayList<Crime> table) {
 		tm.setRowCount(0);
 		Object[] object = new Object[13];

@@ -29,7 +29,8 @@ public class Worker {
 	int regionCode;
 	String regionName;
 	
-	public ArrayList<Crime> readFile(ArrayList<Crime> dataList) {
+	//reads in an external CSV file. 
+	public void readFile(ArrayList<Crime> dataList) {
 		try {
 			Scanner scan = new Scanner(data);
 			
@@ -39,17 +40,13 @@ public class Worker {
 				String[] feilds = scan.nextLine().split(",");
 				int count = 0;
 				for(String item:feilds) {
-//					if (item.contains("-")) {
-//						feilds[count] = null;
-//					}
-//					count ++;
-					if (item.contains("-")) {
+
+					if (item.contains("-")) { 			//Smoothes data for use, getting rid of "bad data" 
 						count++;
 					}
 				}
 				if (count == 0) {
 				index = Integer.parseInt(feilds[0]);
-//				System.out.println(index);
 				areaCode = Integer.parseInt(feilds[1]);
 				areaLocation = feilds[2];
 				victims = Integer.parseInt(feilds[3]);
@@ -87,25 +84,27 @@ public class Worker {
 			System.out.println("there was a problem with this file");
 			e.printStackTrace();
 		}
-		
-		return dataList;
+				
 	}
-	//searches the main data for a area name from the inputted string, returns a single entrey
+	//searches the main data for a area name from the inputed string, returns a single entry
 	public void areaSearch(ArrayList<Crime> dataList, String search, ArrayList<Crime> selected) {	
 		utilites.locationSearch(dataList, search, selected);
 	}
-	//searches the main data for a territory name from the imputted string. returns a arraylist of all of the matchs
+	//searches the main data for a territory name from the imputed string. returns a array list of all of the matches
 	public void territorySearch(ArrayList<Crime> dataList, String search, ArrayList<Crime> selected) {	
 		utilites.territorysearch(dataList, search, selected);
 	}
-	
+	//calls the getMax method in the utilities class, 
 	public void getMax(ArrayList<Crime> dataList, ArrayList<Crime> selected) {
 		utilites.getMax(dataList, selected);
 	}	
+	//calls the getMin method in the utilities class, 
 	public void getMin(ArrayList<Crime> dataList, ArrayList<Crime> selected) {
 		utilites.getMin(dataList, selected);
 	}
 	
+	
+	//Calls the Sorting methods
 	public void sortByregion(ArrayList<Crime> dataList) {utilites.regionCompare(dataList);}
 	public void sortByVictims(ArrayList<Crime> dataList) {utilites.victimsCompare(dataList);}
 	public void sortByTerratory(ArrayList<Crime> dataList) {utilites.terratroyCompare(dataList);}

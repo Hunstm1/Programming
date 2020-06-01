@@ -36,7 +36,7 @@ public class Utilites {
 		
 		Collections.sort(selected);
 	}
-	
+	//returns an array list of the largest amount of crimes
 	public void getMax(ArrayList<Crime> dataList, ArrayList<Crime> selected) {
 		Crime max = dataList.get(0);
 		
@@ -51,6 +51,7 @@ public class Utilites {
 		}		
 		
 	}
+	//returns a array list of the smallest amount of crimes
 	public void getMin(ArrayList<Crime> dataList, ArrayList<Crime> selected) {
 		Crime min = dataList.get(0);
 		
@@ -65,8 +66,9 @@ public class Utilites {
 		}
 
 	}
+	//Compare Methods
 	public void victimsCompare(ArrayList<Crime> dataList) {Collections.sort(dataList, vc);}
 	public void regionCompare(ArrayList<Crime> dataList) {Collections.sort(dataList);}
-	public void terratroyCompare(ArrayList<Crime> dataList) {Collections.sort(dataList, tc);}
+	public void terratroyCompare(ArrayList<Crime> dataList) {Collections.sort(dataList, tc);} 
 	public void areaLocationCompare(ArrayList<Crime> dataList) {Collections.sort(dataList, alc);}
 }
