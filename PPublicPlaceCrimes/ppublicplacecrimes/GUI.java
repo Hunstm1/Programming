@@ -49,7 +49,7 @@ public class GUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Area Code", "Area Name", "Victims", "Population at Mid 2015", "Rate Per 10,000 Population", "NZ Average Rate", "Urban Area Code", "Urban Area Lable", "Urban Area Type", "Territorial Code", "Territorial Lable", "Region Code", "Region Lable"
+				"Index", "Area Code", "Area Name", "Victims", "Population at Mid 2015", "Rate Per 10,000 Population", "NZ Average Rate", "Urban Area Code", "Urban Area Lable", "Urban Area Type", "Territorial Code", "Territorial Lable", "Region Code", "Region Lable"
 			}
 		);
 	
@@ -110,14 +110,14 @@ public class GUI extends JFrame {
 		worker.readFile(dataList);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1847, 794);
+		setBounds(100, 100, 1848, 794);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 84, 1778, 654);
+		tabbedPane.setBounds(10, 84, 1800, 654);
 		contentPane.add(tabbedPane);
 		
 		Main_Data = new JPanel();
@@ -125,24 +125,27 @@ public class GUI extends JFrame {
 		Main_Data.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 5, 1743, 420);
+		scrollPane.setBounds(15, 5, 1780, 420);
 		Main_Data.add(scrollPane);
 		
 		table = new JTable();
 		table.setModel(tm);
-		table.getColumnModel().getColumn(0).setPreferredWidth(86);
+		
+		
+		table.getColumnModel().getColumn(0).setPreferredWidth(54);
 		table.getColumnModel().getColumn(1).setPreferredWidth(90);
-		table.getColumnModel().getColumn(2).setPreferredWidth(63);
-		table.getColumnModel().getColumn(3).setPreferredWidth(174);
-		table.getColumnModel().getColumn(4).setPreferredWidth(208);
-		table.getColumnModel().getColumn(5).setPreferredWidth(136);
+		table.getColumnModel().getColumn(2).setPreferredWidth(91);
+		table.getColumnModel().getColumn(3).setPreferredWidth(66);
+		table.getColumnModel().getColumn(4).setPreferredWidth(176);
+		table.getColumnModel().getColumn(5).setPreferredWidth(204);
 		table.getColumnModel().getColumn(6).setPreferredWidth(132);
 		table.getColumnModel().getColumn(7).setPreferredWidth(135);
 		table.getColumnModel().getColumn(8).setPreferredWidth(133);
-		table.getColumnModel().getColumn(9).setPreferredWidth(122);
+		table.getColumnModel().getColumn(9).setPreferredWidth(139);
 		table.getColumnModel().getColumn(10).setPreferredWidth(123);
-		table.getColumnModel().getColumn(11).setPreferredWidth(102);
+		table.getColumnModel().getColumn(11).setPreferredWidth(129);
 		table.getColumnModel().getColumn(12).setPreferredWidth(102);
+		table.getColumnModel().getColumn(13).setPreferredWidth(101);
 		scrollPane.setViewportView(table);
 		
 		panel_2 = new JPanel();
@@ -318,26 +321,52 @@ public class GUI extends JFrame {
 	//draws my table from a arraylist fed into it
 	public void drawTable(ArrayList<Crime> table) {
 		tm.setRowCount(0);
-		Object[] object = new Object[13];
+		Object[] object = new Object[14];
 		
 		for (Crime crime: table) {
-			object[0] = crime.getAreaCode();
-			object[1] = crime.getAreaLocation();
-			object[2] = crime.getVictims();
-			object[3] = crime.getPopAtMid2015();
-			object[4] = crime.getRatePer10000();
-			object[5] = crime.getNzAdvrage();
-			object[6] = crime.getUrbanAreaCode();
-			object[7] = crime.getUrbanAreaName();
-			object[8] = crime.getUrbanAreaType();
-			object[9] = crime.getTerritorialCode();
-			object[10] = crime.getTerritorialName();
-			object[11] = crime.getRegionCode();
-			object[12] = crime.getTerritorialName();
+			object[0] = crime.getIndex();
+			object[1] = crime.getAreaCode();
+			object[2] = crime.getAreaLocation();
+			object[3] = crime.getVictims();
+			object[4] = crime.getPopAtMid2015();
+			object[5] = crime.getRatePer10000();
+			object[6] = crime.getNzAdvrage();
+			object[7] = crime.getUrbanAreaCode();
+			object[8] = crime.getUrbanAreaName();
+			object[9] = crime.getUrbanAreaType();
+			object[10] = crime.getTerritorialCode();
+			object[11] = crime.getTerritorialName();
+			object[12] = crime.getRegionCode();
+			object[13] = crime.getTerritorialName();
 			tm.addRow(object);
 		}
 		
 	}
+	
+//	public void drawTable(ArrayList<Crime> table) {
+//		tm.setRowCount(0);
+//		Object[] object = new Object[13];
+//		
+//		for (Crime crime: table) {
+//			object[0] = crime.getAreaCode();
+//			object[1] = crime.getAreaLocation();
+//			object[2] = crime.getVictims();
+//			object[3] = crime.getPopAtMid2015();
+//			object[4] = crime.getRatePer10000();
+//			object[5] = crime.getNzAdvrage();
+//			object[6] = crime.getUrbanAreaCode();
+//			object[7] = crime.getUrbanAreaName();
+//			object[8] = crime.getUrbanAreaType();
+//			object[9] = crime.getTerritorialCode();
+//			object[10] = crime.getTerritorialName();
+//			object[11] = crime.getRegionCode();
+//			object[12] = crime.getTerritorialName();
+//			tm.addRow(object);
+//		}
+//		
+//	}
+	
+	
 	//runs a sort method based on what radio button was pressed
 	public void sort() {
 		if (Region.isSelected()) {worker.sortByregion(dataList);}
@@ -405,10 +434,14 @@ public class GUI extends JFrame {
 		
 		switch(r) {
 		case NEXT:
-			index++;
+			if (index != dataList.size() - 1) {
+				index++;
+			}	
 			break;
 		case PREVOUS:
-			index--;
+			if (index != 0) {
+				index--;
+			}
 			break;
 		case FIRST:
 			index = 0;
@@ -417,7 +450,9 @@ public class GUI extends JFrame {
 			index = (dataList.size() - 1);
 			break;
 		case SEARCH:
-			index = Integer.parseInt(FindThisRecord.getText());
+			index = Integer.parseInt(FindThisRecord.getText())- 1;
+			break;
+
 		}
 
 		taRecord.setText(dataList.get(index).toString());
