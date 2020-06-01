@@ -48,8 +48,7 @@ public class Utilites {
 				selected.clear();
 				max = crime;
 			}
-		}		
-		
+		}			
 	}
 	//returns a array list of the smallest amount of crimes
 	public void getMin(ArrayList<Crime> dataList, ArrayList<Crime> selected) {

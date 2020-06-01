@@ -2,6 +2,7 @@ package ppublicplacecrimes;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,6 +11,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.*;
+import org.jfree.data.general.DefaultPieDataset;
+
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
 import javax.swing.JLabel;
@@ -22,15 +27,22 @@ import javax.swing.Action;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
+import javax.swing.JList;
+import javax.swing.JFormattedTextField;
+import javax.swing.JTextArea;
 
 public class GUI extends JFrame {
 
 
 	private ArrayList<Crime> dataList = new ArrayList<Crime>();
 	private Worker worker = new Worker();	
+	private UrbanArea ua;
+	private Record r;
+	private int index = 0;
+	
 	private JPanel contentPane;
 	private JTabbedPane tabbedPane;
-	private JPanel panel;
+	private JPanel Main_Data;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private DefaultTableModel tm = new DefaultTableModel(
@@ -40,6 +52,8 @@ public class GUI extends JFrame {
 				"Area Code", "Area Name", "Victims", "Population at Mid 2015", "Rate Per 10,000 Population", "NZ Average Rate", "Urban Area Code", "Urban Area Lable", "Urban Area Type", "Territorial Code", "Territorial Lable", "Region Code", "Region Lable"
 			}
 		);
+	
+	
 	private JPanel panel_1;
 	private JRadioButton Region;
 	private JRadioButton Victims;
@@ -62,6 +76,14 @@ public class GUI extends JFrame {
 	private JRadioButton rbMax;
 	private final ButtonGroup bgMaxMin = new ButtonGroup();
 	private JButton btnMaxMin;
+	private JPanel Records;
+	private JButton btnNextRecord;
+	private JButton btnPrevousRecord;
+	private JButton btnFirstRecord;
+	private JButton btnLastRecord;
+	private JTextField FindThisRecord;
+	private JButton btnFindRecord;
+	private JTextArea taRecord;
 
 	/**
 	 * Launch the application.
@@ -85,7 +107,7 @@ public class GUI extends JFrame {
 	public GUI() {
 		setTitle("Crime Stats");
 	
-		dataList = worker.readFile(dataList);
+		worker.readFile(dataList);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1847, 794);
@@ -95,16 +117,16 @@ public class GUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 84, 1778, 456);
+		tabbedPane.setBounds(10, 84, 1778, 654);
 		contentPane.add(tabbedPane);
 		
-		panel = new JPanel();
-		tabbedPane.addTab("Main Data ", null, panel, null);
-		panel.setLayout(null);
+		Main_Data = new JPanel();
+		tabbedPane.addTab("Main Data ", null, Main_Data, null);
+		Main_Data.setLayout(null);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(15, 5, 1743, 420);
-		panel.add(scrollPane);
+		Main_Data.add(scrollPane);
 		
 		table = new JTable();
 		table.setModel(tm);
@@ -123,41 +145,9 @@ public class GUI extends JFrame {
 		table.getColumnModel().getColumn(12).setPreferredWidth(102);
 		scrollPane.setViewportView(table);
 		
-		panel_1 = new JPanel();
-		panel_1.setBounds(114, 540, 137, 182);
-		contentPane.add(panel_1);
-		
-		lblNewLabel = new JLabel("Sort By:");
-		panel_1.add(lblNewLabel);
-		
-		Region = new JRadioButton("Region");
-		bgSort.add(Region);
-		panel_1.add(Region);
-		
-		Victims = new JRadioButton("Victims");
-		bgSort.add(Victims);
-		panel_1.add(Victims);
-		
-		Terratory = new JRadioButton("Terratory");
-		bgSort.add(Terratory);
-		panel_1.add(Terratory);
-		
-		Area = new JRadioButton("Area");
-		bgSort.add(Area);
-		panel_1.add(Area);
-		
-		btnSort = new JButton("Sort");
-		btnSort.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				sort();
-			}
-		});
-		btnSort.setBounds(266, 603, 115, 29);
-		contentPane.add(btnSort);
-		
 		panel_2 = new JPanel();
-		panel_2.setBounds(1359, 540, 338, 183);
-		contentPane.add(panel_2);
+		panel_2.setBounds(1372, 438, 338, 183);
+		Main_Data.add(panel_2);
 		panel_2.setLayout(null);
 		
 		lblNewLabel_1 = new JLabel("Search");
@@ -188,19 +178,32 @@ public class GUI extends JFrame {
 		schTerratory.setBounds(193, 37, 155, 29);
 		panel_2.add(schTerratory);
 		
-		panel_3 = new JPanel();
-		panel_3.setBackground(Color.DARK_GRAY);
-		panel_3.setBounds(0, 0, 1810, 77);
-		contentPane.add(panel_3);
+		panel_1 = new JPanel();
+		panel_1.setBounds(101, 438, 137, 182);
+		Main_Data.add(panel_1);
 		
-		lblNewLabel_2 = new JLabel("Crimes In Public Places In 2015");
-		lblNewLabel_2.setForeground(Color.YELLOW);
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 55));
-		panel_3.add(lblNewLabel_2);
+		lblNewLabel = new JLabel("Sort By:");
+		panel_1.add(lblNewLabel);
+		
+		Region = new JRadioButton("Region");
+		bgSort.add(Region);
+		panel_1.add(Region);
+		
+		Victims = new JRadioButton("Victims");
+		bgSort.add(Victims);
+		panel_1.add(Victims);
+		
+		Terratory = new JRadioButton("Terratory");
+		bgSort.add(Terratory);
+		panel_1.add(Terratory);
+		
+		Area = new JRadioButton("Area");
+		bgSort.add(Area);
+		panel_1.add(Area);
 		
 		panel_4 = new JPanel();
-		panel_4.setBounds(591, 566, 228, 98);
-		contentPane.add(panel_4);
+		panel_4.setBounds(697, 493, 228, 98);
+		Main_Data.add(panel_4);
 		panel_4.setLayout(null);
 		
 		rbMax = new JRadioButton("Show Max");
@@ -221,7 +224,96 @@ public class GUI extends JFrame {
 		});
 		btnMaxMin.setBounds(52, 56, 115, 29);
 		panel_4.add(btnMaxMin);
+		
+		btnSort = new JButton("Sort");
+		btnSort.setBounds(253, 507, 115, 29);
+		Main_Data.add(btnSort);
+		btnSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sort();
+			}
+		});
+		
+		Records = new JPanel();
+		tabbedPane.addTab("Records", null, Records, null);
+		Records.setLayout(null);
+		
+		//button action that sets the recored to the next record.
+		btnNextRecord = new JButton("Next");
+		btnNextRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				r = Record.NEXT;
+				swapRecord();
+			}
+		});
+		btnNextRecord.setBounds(43, 104, 115, 29);
+		Records.add(btnNextRecord);
+		
+		//button action that sets the record to the prevous record
+		btnPrevousRecord = new JButton("Prevous");
+		btnPrevousRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				r = Record.PREVOUS;
+				swapRecord();
+			}
+		});
+		btnPrevousRecord.setBounds(422, 104, 115, 29);
+		Records.add(btnPrevousRecord);
+		
+		//button action to set the record to the first record
+		btnFirstRecord = new JButton("First ");
+		btnFirstRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				r = Record.FIRST;
+				swapRecord();
+			}
+		});
+		btnFirstRecord.setBounds(43, 237, 115, 29);
+		Records.add(btnFirstRecord);
+		
+		//button action to set the record to the last record
+		btnLastRecord = new JButton("Last");
+		btnLastRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				r = Record.LAST;
+				swapRecord();
+			}
+		});
+		btnLastRecord.setBounds(422, 237, 115, 29);
+		Records.add(btnLastRecord);
+		
+		FindThisRecord = new JTextField();
+		FindThisRecord.setBounds(121, 415, 146, 26);
+		Records.add(FindThisRecord);
+		FindThisRecord.setColumns(10);
+		
+		//buttion action to find the desired record.
+		btnFindRecord = new JButton("Find Index");
+		btnFindRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				r = Record.SEARCH;
+				swapRecord();
+			}
+		});
+		btnFindRecord.setBounds(359, 414, 115, 29);
+		Records.add(btnFindRecord);
+		
+		taRecord = new JTextArea();
+		taRecord.setBounds(662, 59, 463, 353);
+		Records.add(taRecord);
+		panel_3 = new JPanel();
+		panel_3.setBackground(Color.DARK_GRAY);
+		panel_3.setBounds(0, 0, 1810, 77);
+		contentPane.add(panel_3);
+		panel_3.setLayout(null);
+		
+		lblNewLabel_2 = new JLabel("Crimes In Public Places In 2015");
+		lblNewLabel_2.setBounds(521, 5, 768, 67);
+		lblNewLabel_2.setForeground(Color.YELLOW);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 55));
+		panel_3.add(lblNewLabel_2);
 		drawTable(dataList);
+		createPieGraph();
 	}
 	//draws my table from a arraylist fed into it
 	public void drawTable(ArrayList<Crime> table) {
@@ -281,13 +373,57 @@ public class GUI extends JFrame {
 		worker.sortByArea(selected);
 		drawTable(selected);
 	}
-	
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+	//creates the pie chart
+	public void createPieGraph() {
+		DefaultPieDataset data = new DefaultPieDataset();
+		int main = 0, secondary = 0, rural = 0;
+		
+		for (Crime crime : dataList) {
+			switch (crime.getUrbanAreaType()){
+				case MAIN_URBAN_AREA:
+					main = main + crime.getVictims();
+					break;
+				case SECONDARY_URBAN_AREA:
+					secondary = secondary + crime.getVictims();
+					break;
+				case RURAL_AREA:
+					rural = rural + crime.getVictims();
+					break;
+			}
 		}
-		public void actionPerformed(ActionEvent e) {
-		}
+		data.setValue(ua.MAIN_URBAN_AREA, main);
+		data.setValue(ua.SECONDARY_URBAN_AREA, secondary);
+		data.setValue(ua.RURAL_AREA, rural);
+		
+		JFreeChart chart = ChartFactory.createPieChart("Urban Area Crimes", data, true, true, Locale.ENGLISH);		
+		ChartPanel pieChart = new ChartPanel(chart);
+		pieChart.setVisible(true);
+				
+		tabbedPane.add("Urban Area Crimes Pie Graph", pieChart);
 	}
+	public void swapRecord() {	
+		
+		switch(r) {
+		case NEXT:
+			index++;
+			break;
+		case PREVOUS:
+			index--;
+			break;
+		case FIRST:
+			index = 0;
+			break;
+		case LAST:
+			index = (dataList.size() - 1);
+			break;
+		case SEARCH:
+			index = Integer.parseInt(FindThisRecord.getText());
+		}
+
+		taRecord.setText(dataList.get(index).toString());
+			
+	}
+	
+
+	
 }

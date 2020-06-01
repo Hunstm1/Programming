@@ -11,7 +11,7 @@ public class Worker {
 	Utilites utilites = new Utilites();
 	
 	
-	int index;
+	int index = 0;
 	int areaCode;
 	String areaLocation;
 	int victims;
@@ -46,7 +46,7 @@ public class Worker {
 					}
 				}
 				if (count == 0) {
-				index = Integer.parseInt(feilds[0]);
+				index++;
 				areaCode = Integer.parseInt(feilds[1]);
 				areaLocation = feilds[2];
 				victims = Integer.parseInt(feilds[3]);

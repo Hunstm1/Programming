@@ -1,6 +1,7 @@
 package ppublicplacecrimes;
 
 public class Crime implements Comparable<Crime>{//RegionName is the defult compare
+	
 	private int index;
 	private int areaCode;
 	private String areaLocation;//
@@ -91,7 +92,8 @@ public class Crime implements Comparable<Crime>{//RegionName is the defult compa
 		StringBuilder builder = new StringBuilder();
 		
 		builder.append("\n");
-		builder.append("Area Location: " + areaLocation);
+		builder.append("\n" + "Index: " + index);
+		builder.append("\n" + "Area Location: " + areaLocation);
 		builder.append("\n" + "Area Code: " + areaCode);
 		builder.append("\n" + "Amount of Victims: " + victims);
 		builder.append("\n" + "Population at mid 2015: " + popAtMid2015);
